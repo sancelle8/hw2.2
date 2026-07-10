@@ -1,0 +1,60 @@
+import random
+class Hero:
+    def __init__(self, name, level, health, strength):
+        self.name = name
+        self.level = level
+        self.health = health
+        self.strength = strength
+    def greet(self):
+        return f"Привет! Я герой по имени {self.name}."
+    def attack(self):
+        return f"{self.name} наносит базовый удар!"
+    def rest(self):
+        self.health += 10
+        return f"{self.name} отдохнул и восстановил здоровье. Текущее здоровье: {self.health}"
+class Warrior(Hero):
+    def __init__(self, name, level, health, strength, stamina):
+        super().__init__(name, level, health, strength)
+        self.stamina = stamina
+    def attack(self):
+        return f"{self.name} (Воин) атакует мечом! "
+class Mage(Hero):
+    def __init__(self, name, level, health, strength, mana):
+        super().__init__(name, level, health, strength)
+        self.mana = mana
+    def attack(self):
+        return f"{self.name} (Маг) кастует заклинание! "
+class Assassin(Hero):
+    def __init__(self, name, level, health, strength, stealth):
+        super().__init__(name, level, health, strength)
+        self.stealth = stealth
+    def attack(self):
+        return f"{self.name} (Ассасин) атакует из-под тишка! 🗡️"
+heroes_pool = {
+    "Warrior": Warrior(name="Саша", level=5, health=120, strength=15, stamina=80),
+    "Mage": Mage(name="Андрей", level=6, health=80, strength=5, mana=150),
+    "Assassin": Assassin(name="Артем", level=4, health=95, strength=12, stealth=90)
+}
+def play_game():
+    print("=== Добро пожаловать в мини-игру 'Камень, Ножницы, Бумага' ===")
+    print("Доступные герои: Warrior, Mage, Assassin")
+    user_choice = input("Выберите героя: ").strip().capitalize()
+    if user_choice not in heroes_pool:
+        print("Ошибка! Такого героя не существует.")
+        return
+    user_hero = heroes_pool[user_choice]
+    ai_choice = random.choice(list(heroes_pool.keys()))
+    ai_hero = heroes_pool[ai_choice]
+    print(f"\nВы выбрали: {user_choice} ({user_hero.name}) -> {user_hero.attack()}")
+    print(f"Противник: {ai_choice} ({ai_hero.name}) -> {ai_hero.attack()}\n")
+    if user_choice == ai_choice:
+        print("Ничья!")
+    elif (user_choice == "Warrior" and ai_choice == "Assassin") or \
+         (user_choice == "Assassin" and ai_choice == "Mage") or \
+         (user_choice == "Mage" and ai_choice == "Warrior"):
+        print(f" Победил ваш герой: {user_choice} ({user_hero.name})!")
+    else:
+        print(f"Победил противник: {ai_choice} ({ai_hero.name})!")
+
+if __name__ == "__main__":
+    play_game()
